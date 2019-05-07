@@ -1,24 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, RequestOptions, Headers} from '@angular/http';
+import {HttpClient, HttpClientModule, HttpParams } from '@angular/common/http';
 import { Customer } from './customer';
-
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/Rx';
 
+
+
 @Injectable()
 export class CustomerService{
-    constructor(private _httpService: Http){};
+    
+    constructor(private _httpService: Http,private _sanitizer: DomSanitizer){};
 
         uploadImage(file:any,id:number){
         const formData = new FormData();
         formData.append('imageFile',file);
-        return  this._httpService.post("http://localhost:8080/customers/"+id+"/image",formData)
-        .subscribe(res => {
-            console.log(res);
-            alert('SUCCESS !!');
-          });
+        return  this._httpService.post("http://localhost:8080/customers/"+id+"/image",formData);
+       
+    }
+
+    getImage(image:string):Observable<any>{
+       /* const params = new HttpParams()
+        .append('imageName', image);*/
+        
+           
+                return this._httpService.get("http://localhost:8080/customers/image/"+image);
     }
 
     getCustomersPage(page:Number){

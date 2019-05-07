@@ -39,21 +39,24 @@
             <th>Email</th>
             <th>Last Update</th>
             <th>Photo</th>
+            <th>Image</th>
             <th>Actions</th>
             
         </tr>
     </thead>
     <tbody>
-    <tr *ngFor = "let customer1 of customerPage">
+    <tr *ngFor = "let customer1 of customerPage ">
+            
         <th scope="row" >{{customer1.id}}</th>
         <td>{{customer1.firstName}}</td>
         <td>{{customer1.lastName}}</td>
         <td>{{customer1.email}}</td>
         <td>{{customer1.updated}}</td>
-        <td><div class="form-group">
+        <td><!---<div class="form-group">-->
             <label for="file">File upload:</label>
             <input type="file" class="form-control" accept="image/" (change)="onSelectFile($event,customer1.id)" style="height:100%" />
-       </div></td>
+      <!--- </div>--></td>
+       <img  alt="{{customer1.image}}" width="100" height="100" src= "http://localhost:8080/customers/image/{{customer1.image}}" />
         <td><button class="w3-btn w3-yellow w3-round-large w3-margin-bottom" (click)="getCustomerById(customer1.id)" >Update</button>|<button class="w3-btn w3-yellow w3-round-large w3-margin-bottom" (click)="deleteCustomer(customer1.id)">Delete</button> </td>
     </tr>
 </tbody>

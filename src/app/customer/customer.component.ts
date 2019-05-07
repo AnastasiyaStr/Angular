@@ -1,6 +1,7 @@
 import {Component,OnInit} from '@angular/core';
 import {Customer} from './customer';
 import { CustomerService } from './customer.service';
+import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 
 @Component({
     selector:'customers',
@@ -16,7 +17,8 @@ export class CustomerComponent implements OnInit{
         private customerPage: Array<any>;
         private  pages:Array<number>;
         public userFile:any = File; 
-        constructor( private _customerService: CustomerService){}
+        public im:any;
+        constructor( private _customerService: CustomerService,private _sanitizer: DomSanitizer){}
 
         ngOnInit():void{
             this.getCustomersByPage();
@@ -30,6 +32,16 @@ export class CustomerComponent implements OnInit{
         }
 
 
+        serveImage(image:string){
+           return this._customerService.getImage(image).subscribe(res => {
+               this.im= this._sanitizer.bypassSecurityTrustUrl(res);
+            console.log("!!!!!!!!!!!!!!"+this.im);
+            
+            
+          }) ;
+        }
+
+
         onSelectFile(event,id){
             const file = event.target.files[0];
            /*const fd = new FormData();
@@ -37,7 +49,11 @@ export class CustomerComponent implements OnInit{
             console.log(file);*/
             console.log(file);
             this.userFile=file; 
-            this._customerService.uploadImage(file,id);
+            this._customerService.uploadImage(file,id) .subscribe(res => {
+                console.log(res);
+                this.getCustomersByPage();
+              });;
+           
         }
 
         getCustomersByPage(){
@@ -69,7 +85,7 @@ export class CustomerComponent implements OnInit{
 
         addCustomer(): void{
             this._customerService.addCustomer(this.customer)
-            .subscribe((response)=>{console.log(response);this.reset();this.getCustomers();},
+            .subscribe((response)=>{console.log(response);this.reset();this.getCustomersByPage();},
                 (error) => {console.log(error);
                 });
         }

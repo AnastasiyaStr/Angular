@@ -8,6 +8,7 @@ import {CustomerComponent} from './customer/customer.component';
 import { CustomerService } from './customer/customer.service';
 import { HttpModule } from '@angular/http';
 import {FormsModule } from '@angular/forms';
+import { AgmCoreModule } from '@agm/core';
 @NgModule({
   declarations: [
     AppComponent,CustomerComponent
